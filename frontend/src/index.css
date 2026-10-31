@@ -1,2 +1,5 @@
 /* Brightloop global styles live in App.css.
    This file intentionally replaces the conflicting Vite starter styles. */
+
+.brightloop-loading,.brightloop-error {min-height:100vh;display:flex;align-items:center;justify-content:center;gap:18px;flex-direction:column;font-family:Inter,Arial,sans-serif;color:#4d27c5;background:#f7f5ff;}
+.brightloop-error button {padding:10px 18px;background:#6338e8;color:white;border:none;border-radius:8px;cursor:pointer;}

@@ -1,10 +1,11 @@
 import json
-from django.contrib.auth import authenticate, login as django_login
+from django.contrib.auth import authenticate, login as django_login, logout as django_logout
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse
 from django.middleware.csrf import get_token
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_GET
+from django.views.decorators.cache import never_cache
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect
 
@@ -90,9 +91,30 @@ def login_view(request):
 
     return JsonResponse({
         "message": "Login successful!",
-        "user": {
-            "id": user.id,
-            "email": user.email,
-            "role": user.role
-        }
+        "user": public_user(user)
     })
+
+
+
+def public_user(user):
+    return {
+        'id': user.pk,
+        'email': user.email,
+        'full_name': user.get_full_name(),
+        'role': user.role,
+    }
+
+
+@require_GET
+@never_cache
+def session_view(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'authenticated': False})
+    return JsonResponse({'authenticated': True, 'user': public_user(request.user)})
+
+
+@require_POST
+@csrf_protect
+def logout_view(request):
+    django_logout(request)
+    return JsonResponse({'message': 'Logged out successfully.'})
