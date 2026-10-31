@@ -194,6 +194,15 @@ CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1:5173',
 ]
 
+# Trust our Render website for secure login and registration
+render_hostname = os.getenv('RENDER_EXTERNAL_HOSTNAME')
+
+if render_hostname:
+    CSRF_TRUSTED_ORIGINS.append(
+        f'https://{render_hostname}'
+    )
+
+
 # Secure authentication defaults for our API
 
 REST_FRAMEWORK = {
