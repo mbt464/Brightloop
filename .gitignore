@@ -1,0 +1,20 @@
+
+# Environment variables and secrets
+.env
+.env.*
+
+# Python environment
+.venv/
+__pycache__/
+*.pyc
+
+# Local database
+db.sqlite3
+
+# React dependencies and builds
+frontend/node_modules/
+frontend/dist/
+
+# Local development files
+.vscode/
+staticfiles/
